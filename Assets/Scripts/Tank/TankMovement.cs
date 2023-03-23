@@ -10,6 +10,7 @@ public class TankMovement : MonoBehaviour
     private Rigidbody m_Rigidbody;
     private float m_MovementInputValue;
     private float m_TurnInputValue;
+    private Transform m_tank;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class TankMovement : MonoBehaviour
 
         m_MovementInputValue = 0f;
         m_TurnInputValue = 0f;
+        m_tank = GetComponent<Transform>();
     }
 
     private void OnDisable()
@@ -51,6 +53,13 @@ public class TankMovement : MonoBehaviour
 
         // Apply this movement to the rigidbody's position 
         m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
+
+
+
+        //if (m_tank.transform.rotation.x > 30 || m_tank.transform.rotation.x < -30)
+        //{
+        //    m_tank.transform.rotation = new Quaternion(0, m_tank.transform.rotation.y, m_tank.transform.rotation.z, 1);
+        //}
     }
 
     private void Turn()
@@ -64,5 +73,17 @@ public class TankMovement : MonoBehaviour
 
         // apply this rotation to the rigidbody's rotation 
         m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
+
+        //Debug.Log(m_tank);
+
+        if (m_tank.transform.rotation.z > 30 || m_tank.transform.rotation.z < -30)
+        {
+            Debug.Log("hello");
+            m_tank.transform.rotation = new Quaternion(0, 0, 0, 1);
+        }
+        if (m_tank.transform.rotation.x > 30 || m_tank.transform.rotation.x < -30)
+        {
+            m_tank.transform.rotation = new Quaternion(0, 0, 0, 1);
+        }
     }
 } 

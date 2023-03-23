@@ -19,6 +19,8 @@ public class EnemyTankMovement : MonoBehaviour
     // A reference to the rigidbody component
     private Rigidbody m_Rigidbody;
 
+    private Transform m_TankRenderers;
+
 
     // Set to true when tank should follow player
     private bool m_Follow;
@@ -35,6 +37,8 @@ public class EnemyTankMovement : MonoBehaviour
         m_Base = GameObject.FindGameObjectWithTag("EnemyBase");
         m_NavAgent = GetComponent<NavMeshAgent>();
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_TankRenderers = gameObject.transform.Find("TankRenderers");
+        m_Turret = m_TankRenderers.transform.Find("TankTurret");
         m_Follow = false;
     }
 
@@ -58,6 +62,7 @@ public class EnemyTankMovement : MonoBehaviour
 
             if (m_Turret != null)
             {
+               // Debug.Log("Test");
                 m_Turret.LookAt(m_Base.transform);
             }
 
@@ -79,6 +84,7 @@ public class EnemyTankMovement : MonoBehaviour
 
         if (m_Turret != null)
         {
+            //Debug.Log("Test");
             m_Turret.LookAt(m_Player.transform);
         }
 
