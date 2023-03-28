@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Shell : MonoBehaviour
@@ -27,7 +30,24 @@ public class Shell : MonoBehaviour
         // find the rigidbody of the collision object
         Rigidbody targetRigidbody = other.gameObject.GetComponent<Rigidbody>();
 
-        // Add code to damage tank here
+        // Only tanks will have rigidbody scripts
+        if (targetRigidbody != null)
+        {
+            // Add an explosion force
+            targetRigidbody.AddExplosionForce(m_ExposionForce, transform.position, m_ExplosionRadius);
+
+            // Find the tankhealth script
+            TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth>();
+
+            if (targetHealth != null)
+            {
+                // Calc amount of damage the target should take depending on distance from shell
+                float damage = CalculateDamage(targetRigidbody.position);
+
+                // Deal health to tank
+                targetHealth.TakeDamage(damage);
+            }
+        }
 
         // Unparent particles from shell
         m_ExplosionParticles.transform.parent = null;
@@ -40,12 +60,22 @@ public class Shell : MonoBehaviour
 
         // Destroy shell
         Destroy(gameObject);
-
     }
 
-    // Update is called once per frame
-    void Update()
+    private float CalculateDamage(Vector3 targetPosition)
     {
-        
+        // Create a vector from the shell to the target
+        Vector3 explosionToTarget = targetPosition - transform.position;
+        // Calculate the distance from the shell to the target
+        float explosionDistance = explosionToTarget.magnitude;
+        // Calculate the proportion of the maximum distance (the explosionRadius)
+        // the target is away
+        float relativeDistance =
+        (m_ExplosionRadius - explosionDistance) / m_ExplosionRadius;
+        // Calculate damage as this proportion of the maximum possible damage
+        float damage = relativeDistance * m_MaxDamage;
+        // Make sure that the minimum damage is always 0
+        damage = Mathf.Max(0f, damage);
+        return damage;
     }
 }

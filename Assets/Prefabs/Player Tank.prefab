@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 3374350227011351485}
   - component: {fileID: 3374350227011351482}
   - component: {fileID: 3374350227011351483}
+  - component: {fileID: 3699201914753648045}
   m_Layer: 0
   m_Name: Player Tank
   m_TagString: Player
@@ -378,6 +379,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Speed: 12
   m_TurnSpeed: 180
+--- !u!114 &3699201914753648045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3374350226474669532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b754028064d9d46aac9b10214456f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StartingHealth: 100
+  m_ExplosionPrefab: {fileID: 122668, guid: 5f53e2b760f0b2a4c8b27bb6f25b3c90, type: 3}
 --- !u!1 &3374350226474669534
 GameObject:
   m_ObjectHideFlags: 0
