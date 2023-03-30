@@ -11,12 +11,6 @@ public class TankShooting : MonoBehaviour
     // The force given to the shell when firing
     public float m_LaunchForce = 30f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {

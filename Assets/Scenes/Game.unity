@@ -2123,20 +2123,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 494176772568790886, guid: 04e328b5e44ff6846a74784ee92618c1, type: 3}
   m_PrefabInstance: {fileID: 494176773696242042}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1163916831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1163422262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58b754028064d9d46aac9b10214456f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StartingHealth: 100
-  m_ExplosionPrefab: {fileID: 122668, guid: 5f53e2b760f0b2a4c8b27bb6f25b3c90, type: 3}
 --- !u!1 &1186949829 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 1a74eb9413507b74aa351df6814ffc44, type: 3}
@@ -2546,6 +2532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StartingHealth: 100
   m_ExplosionPrefab: {fileID: 122668, guid: 5f53e2b760f0b2a4c8b27bb6f25b3c90, type: 3}
+  m_TankPrefab: {fileID: 0}
 --- !u!1 &1327416216
 GameObject:
   m_ObjectHideFlags: 0
@@ -3596,7 +3583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 494176772568790892, guid: 04e328b5e44ff6846a74784ee92618c1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 32.427254
+      value: -60.5
       objectReference: {fileID: 0}
     - target: {fileID: 494176772568790892, guid: 04e328b5e44ff6846a74784ee92618c1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3604,7 +3591,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 494176772568790892, guid: 04e328b5e44ff6846a74784ee92618c1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.222832
+      value: -20.57
       objectReference: {fileID: 0}
     - target: {fileID: 494176772568790892, guid: 04e328b5e44ff6846a74784ee92618c1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3694,6 +3681,10 @@ PrefabInstance:
     - target: {fileID: 3374350227011351485, guid: af88cd142b6d43b45b3bf293978caf6b, type: 3}
       propertyPath: m_Mass
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699201914753648045, guid: af88cd142b6d43b45b3bf293978caf6b, type: 3}
+      propertyPath: m_StartingHealth
+      value: 1000000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af88cd142b6d43b45b3bf293978caf6b, type: 3}

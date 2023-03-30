@@ -10,12 +10,16 @@ public class TankHealth : MonoBehaviour
 
     // Prefab that will  be insitaged in awake then used whnever the tank dies
     public GameObject m_ExplosionPrefab;
+    public GameObject m_TankPrefab;
 
     private float m_CurrentHealth;
     private bool m_Dead;
 
     // Particle system that will be played when tank is destroyed
     private ParticleSystem m_ExplosionParticles;
+
+    // Enemy base location
+    private GameObject m_Base;
 
     private void Awake()
     {
@@ -24,6 +28,9 @@ public class TankHealth : MonoBehaviour
 
         // Disable the prefab so it can be activated when needed
         m_ExplosionParticles.gameObject.SetActive(false);
+
+        // Find enemy base
+        m_Base = GameObject.FindGameObjectWithTag("EnemyBase");
     }
 
     private void OnEnable()
@@ -64,11 +71,23 @@ public class TankHealth : MonoBehaviour
         m_ExplosionParticles.transform.position = transform.position;
         m_ExplosionParticles.gameObject.SetActive(true);
 
+        
+        
+
         // Play explosion particles
         m_ExplosionParticles.Play();
 
         // Turn tank off
         gameObject.SetActive(false);
+
+        if (m_TankPrefab.gameObject != null)
+        {
+            var newTank = Instantiate(m_TankPrefab, m_Base.transform.position, m_Base.transform.rotation);
+            newTank.gameObject.transform.position = m_Base.transform.position;
+            newTank.gameObject.SetActive(true);
+
+
+        }
     }
 
 
