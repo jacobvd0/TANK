@@ -16,7 +16,7 @@ public class CameraControl : MonoBehaviour
     float cameraSize;
     float currentSize;
     float maxSize = 18;
-    float minSize = 1;
+    float minSize = 5;
 
     private void Awake()
     {
@@ -46,7 +46,6 @@ public class CameraControl : MonoBehaviour
             {
                 currentSize -= scroll * 2;
                 Camera.main.orthographicSize = currentSize;
-                Debug.Log(currentSize);
             }
             
         } else if (scroll > 0)
@@ -55,7 +54,6 @@ public class CameraControl : MonoBehaviour
             {
                 currentSize -= scroll * 2;
                 Camera.main.orthographicSize = currentSize;
-                Debug.Log(currentSize);
             }
             
         }
