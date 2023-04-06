@@ -1,11 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject[] m_Tanks;
+    public TextMeshProUGUI m_MessageText;
+    public TextMeshProUGUI m_TimerText;
 
     private float m_gameTime = 0;
     public float GameTime {  get { return m_gameTime; } }
@@ -19,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     private GameState m_GameState;
     public GameState State { get { return m_GameState; } }
+    int[] scores = new int[10];
 
 
     private void Awake()
@@ -32,6 +38,9 @@ public class GameManager : MonoBehaviour
         {
             m_Tanks[i].SetActive(false);
         }
+
+        m_TimerText.gameObject.SetActive(false);
+        m_MessageText.text = "Get Ready";
     }
 
     private void Update()
@@ -41,6 +50,8 @@ public class GameManager : MonoBehaviour
             case GameState.Start:
                 if (Input.GetKeyUp(KeyCode.Return) == true)
                 {
+                    m_TimerText.gameObject.SetActive(true);
+                    m_MessageText.text = "";
                     m_GameState = GameState.Playing;
 
                     for (int i = 0; i < m_Tanks.Length; i++)
@@ -54,6 +65,7 @@ public class GameManager : MonoBehaviour
 
                 m_gameTime += Time.deltaTime;
                 int seconds = Mathf.RoundToInt(m_gameTime);
+                m_TimerText.text = string.Format("{0:D2}:{1:D2}", (seconds / 60), (seconds % 60));
 
                 //if (OneTankLeft() == true || IsPlayerDead() == true)
                 //{
@@ -71,6 +83,34 @@ public class GameManager : MonoBehaviour
                 if (isGameOver == true)
                 {
                     m_GameState = GameState.GameOver;
+                    m_TimerText.gameObject.SetActive(false);
+                    int currentscore = seconds;
+                    int progress = 0;
+                    foreach (int _scores in scores)
+                    {
+                        if (_scores < currentscore)
+                        {
+                            int tmpscore = _scores;
+                            scores[progress] = currentscore;
+                            currentscore = tmpscore;
+
+                        } else
+                        {
+                            scores[progress] = currentscore;
+                            currentscore = 0;
+                        }
+
+                        Debug.Log(_scores);
+                        progress++;
+                    }
+
+                    if (IsPlayerDead() == true)
+                    {
+                        m_MessageText.text = "TRY AGAIN";
+                    } else
+                    {
+                        m_MessageText.text = "WINNER!";
+                    }
                 }
                 break;
             case GameState.GameOver:
@@ -78,6 +118,8 @@ public class GameManager : MonoBehaviour
                 {
                     m_gameTime = 0;
                     m_GameState = GameState.Playing;
+                    m_MessageText.text = "";
+                    m_TimerText.gameObject.SetActive(true);
 
                     for (int i = 0; i < m_Tanks.Length; i++)
                     {
