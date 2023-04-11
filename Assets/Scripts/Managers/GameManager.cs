@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.SocialPlatforms.Impl;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject[] m_Tanks;
     public TextMeshProUGUI m_MessageText;
     public TextMeshProUGUI m_TimerText;
+    public TextMeshProUGUI m_HighscoreText;
 
     private float m_gameTime = 0;
     public float GameTime {  get { return m_gameTime; } }
@@ -34,12 +37,25 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Read scores from file
+        if (!File.Exists(Application.dataPath + "\\highscores"))
+        {
+            StreamWriter _scoresfile = new StreamWriter(Application.dataPath + "\\highscores");
+            _scoresfile.Close();
+            string[] result = Array.ConvertAll(scores, x => x.ToString());
+            File.WriteAllLines(Application.dataPath + "\\highscores", result);
+        }
+        string[] _fileScores = File.ReadAllLines(Application.dataPath + "\\highscores");
+        scores = Array.ConvertAll(_fileScores, x => Int32.Parse(x));
+
+
         for (int i = 0; i < m_Tanks.Length; i++)
         {
             m_Tanks[i].SetActive(false);
         }
 
         m_TimerText.gameObject.SetActive(false);
+        m_HighscoreText.gameObject.SetActive(false);
         m_MessageText.text = "Get Ready";
     }
 
@@ -51,6 +67,7 @@ public class GameManager : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.Return) == true)
                 {
                     m_TimerText.gameObject.SetActive(true);
+                    m_HighscoreText.gameObject.SetActive(true);
                     m_MessageText.text = "";
                     m_GameState = GameState.Playing;
 
@@ -66,6 +83,7 @@ public class GameManager : MonoBehaviour
                 m_gameTime += Time.deltaTime;
                 int seconds = Mathf.RoundToInt(m_gameTime);
                 m_TimerText.text = string.Format("{0:D2}:{1:D2}", (seconds / 60), (seconds % 60));
+                m_HighscoreText.text = string.Format("Time to beat:\n{0:D2}:{1:D2}", (scores[0] / 60), (scores[0] % 60));
 
                 //if (OneTankLeft() == true || IsPlayerDead() == true)
                 //{
@@ -80,29 +98,41 @@ public class GameManager : MonoBehaviour
                     isGameOver = true;
                 }
 
-                if (isGameOver == true)
+                if (isGameOver == true) // Checks if the game is over
                 {
+
+                    // Sets the game state to being over & removes the timer
                     m_GameState = GameState.GameOver;
                     m_TimerText.gameObject.SetActive(false);
+
+                    // Sets temporary variables for the foreach loop below
                     int currentscore = seconds;
                     int progress = 0;
+
+                    // Temporary separater for debugging
+                    Debug.Log("===");
+                    Debug.Log("===");
+                    Debug.Log("===");
+
+                    // Loops through all scores and tries to add the score in the correct position to keep it in order (highest score -> lowest score)
                     foreach (int _scores in scores)
                     {
-                        if (_scores < currentscore)
+                        if (_scores < currentscore) // Checks if the current score is bigger than the score it's checking
                         {
-                            int tmpscore = _scores;
-                            scores[progress] = currentscore;
-                            currentscore = tmpscore;
+                            int tmpscore = _scores; // Sets the score being replaced as a temporary score
+                            scores[progress] = currentscore; // Replaces the score with the current score
+                            currentscore = tmpscore; // Sets the current score to the old one (does this as there may be another score this one can replace instead of being deleted)
 
-                        } else
-                        {
-                            scores[progress] = currentscore;
-                            currentscore = 0;
                         }
+                        Debug.Log(_scores); // Logs the scores (for debugging)
+                        progress++; // Moves the progress counter up by 1
+                    }                    
 
-                        Debug.Log(_scores);
-                        progress++;
-                    }
+                    // Writes high scores to the highscores file
+                    string[] result = Array.ConvertAll(scores, x => x.ToString());
+                    File.WriteAllLines(Application.dataPath + "\\highscores", result);
+
+
 
                     if (IsPlayerDead() == true)
                     {
