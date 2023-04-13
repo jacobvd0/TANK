@@ -94,6 +94,10 @@ public class GameManager : MonoBehaviour
                         break; // end the loop if it finds one that is 0 (since they're already in order it is safe to stop when finding an empty time)
                     }
                 }
+                if(scoreToSet == 0)
+                {
+                    m_HighscoreText.gameObject.SetActive(false);
+                }
                 m_HighscoreText.text = string.Format("Time to beat:\n{0:D2}:{1:D2}", (scoreToSet / 60), (scoreToSet % 60));
 
                 //if (OneTankLeft() == true || IsPlayerDead() == true)
@@ -115,6 +119,7 @@ public class GameManager : MonoBehaviour
                     // Sets the game state to being over & removes the timer
                     m_GameState = GameState.GameOver;
                     m_TimerText.gameObject.SetActive(false);
+                    m_HighscoreText.gameObject.SetActive(false);
 
 
 
@@ -139,7 +144,7 @@ public class GameManager : MonoBehaviour
                         // Loops through all scores and tries to add the score in the correct position to keep it in order (highest score -> lowest score)
                         foreach (int _scores in scores)
                         {
-                            if (_scores < currentscore) // Checks if the current score is bigger than the score it's checking
+                            if (_scores > currentscore || _scores == 0) // Checks if the current score is lower than the score it's checking
                             {
                                 int tmpscore = _scores; // Sets the score being replaced as a temporary score
                                 scores[progress] = currentscore; // Replaces the score with the current score
