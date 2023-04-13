@@ -116,32 +116,6 @@ public class GameManager : MonoBehaviour
                     m_GameState = GameState.GameOver;
                     m_TimerText.gameObject.SetActive(false);
 
-                    // Sets temporary variables for the foreach loop below
-                    int currentscore = seconds;
-                    int progress = 0;
-
-                    // Temporary separater for debugging
-                    Debug.Log("===");
-                    Debug.Log("===");
-                    Debug.Log("===");
-
-                    // Loops through all scores and tries to add the score in the correct position to keep it in order (highest score -> lowest score)
-                    foreach (int _scores in scores)
-                    {
-                        if (_scores < currentscore) // Checks if the current score is bigger than the score it's checking
-                        {
-                            int tmpscore = _scores; // Sets the score being replaced as a temporary score
-                            scores[progress] = currentscore; // Replaces the score with the current score
-                            currentscore = tmpscore; // Sets the current score to the old one (does this as there may be another score this one can replace instead of being deleted)
-
-                        }
-                        Debug.Log(_scores); // Logs the scores (for debugging)
-                        progress++; // Moves the progress counter up by 1
-                    }                    
-
-                    // Writes high scores to the highscores file
-                    string[] result = Array.ConvertAll(scores, x => x.ToString());
-                    File.WriteAllLines(Application.dataPath + "\\highscores", result);
 
 
 
@@ -151,6 +125,34 @@ public class GameManager : MonoBehaviour
                     } else
                     {
                         m_MessageText.text = "WINNER!";
+
+
+                        // Sets temporary variables for the foreach loop below
+                        int currentscore = seconds;
+                        int progress = 0;
+
+                        // Temporary separater for debugging
+                        Debug.Log("===");
+                        Debug.Log("===");
+                        Debug.Log("===");
+
+                        // Loops through all scores and tries to add the score in the correct position to keep it in order (highest score -> lowest score)
+                        foreach (int _scores in scores)
+                        {
+                            if (_scores < currentscore) // Checks if the current score is bigger than the score it's checking
+                            {
+                                int tmpscore = _scores; // Sets the score being replaced as a temporary score
+                                scores[progress] = currentscore; // Replaces the score with the current score
+                                currentscore = tmpscore; // Sets the current score to the old one (does this as there may be another score this one can replace instead of being deleted)
+
+                            }
+                            Debug.Log(_scores); // Logs the scores (for debugging)
+                            progress++; // Moves the progress counter up by 1
+                        }
+
+                        // Writes high scores to the highscores file
+                        string[] result = Array.ConvertAll(scores, x => x.ToString());
+                        File.WriteAllLines(Application.dataPath + "\\highscores", result);
                     }
                 }
                 break;
