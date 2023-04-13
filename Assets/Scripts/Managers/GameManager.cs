@@ -79,11 +79,22 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 bool isGameOver = false;
-
+                int scoreToSet = 0;
                 m_gameTime += Time.deltaTime;
                 int seconds = Mathf.RoundToInt(m_gameTime);
                 m_TimerText.text = string.Format("{0:D2}:{1:D2}", (seconds / 60), (seconds % 60));
-                m_HighscoreText.text = string.Format("Time to beat:\n{0:D2}:{1:D2}", (scores[0] / 60), (scores[0] % 60));
+                foreach(int _scores in scores) // Loops through all scores to find the lowest time (fastest win)
+                {
+                    if (_scores != 0 && _scores != null)
+                    {
+                        scoreToSet = _scores;
+                    }
+                    else
+                    {
+                        break; // end the loop if it finds one that is 0 (since they're already in order it is safe to stop when finding an empty time)
+                    }
+                }
+                m_HighscoreText.text = string.Format("Time to beat:\n{0:D2}:{1:D2}", (scoreToSet / 60), (scoreToSet % 60));
 
                 //if (OneTankLeft() == true || IsPlayerDead() == true)
                 //{
