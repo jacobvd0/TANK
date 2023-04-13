@@ -80,14 +80,16 @@ public class TankHealth : MonoBehaviour
         // Turn tank off
         gameObject.SetActive(false);
 
-        if (m_TankPrefab.gameObject != null)
-        {
-            var newTank = Instantiate(m_TankPrefab, m_Base.transform.position, m_Base.transform.rotation);
-            newTank.gameObject.transform.position = m_Base.transform.position;
-            newTank.gameObject.SetActive(true);
+        //if (m_TankPrefab.gameObject != null)
+        //{
+        //    var newTank = Instantiate(m_TankPrefab, m_Base.transform.position, m_Base.transform.rotation);
+        //    newTank.gameObject.transform.position = m_Base.transform.position;
+        //    newTank.gameObject.SetActive(true);
 
 
-        }
+        //}
+        //  ^ disabled this since tanks spawn back after rounds instead now (leaving this on makes extra spawn)
+
     }
 
 

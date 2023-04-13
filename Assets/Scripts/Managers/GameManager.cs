@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.SocialPlatforms.Impl;
 using System.IO;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI m_MessageText;
     public TextMeshProUGUI m_TimerText;
     public TextMeshProUGUI m_HighscoreText;
+    public GameObject m_HighScorePanel;
+    public TextMeshProUGUI m_HighScoresText;
+    public Button m_NewGameButton;
+    public Button m_HighScoresButton;
+    public Button m_HighScoreBackButton;
 
     private float m_gameTime = 0;
     public float GameTime {  get { return m_gameTime; } }
@@ -57,6 +63,11 @@ public class GameManager : MonoBehaviour
         m_TimerText.gameObject.SetActive(false);
         m_HighscoreText.gameObject.SetActive(false);
         m_MessageText.text = "Get Ready";
+
+        m_HighScorePanel.gameObject.SetActive(false);
+        m_HighScoreBackButton.gameObject.SetActive(false);
+        m_NewGameButton.gameObject.SetActive(false);
+        m_HighScoresButton.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -121,6 +132,8 @@ public class GameManager : MonoBehaviour
                     m_TimerText.gameObject.SetActive(false);
                     m_HighscoreText.gameObject.SetActive(false);
 
+                    m_NewGameButton.gameObject.SetActive(true);
+                    m_HighScoresButton.gameObject.SetActive(true);
 
 
 
@@ -211,5 +224,51 @@ public class GameManager : MonoBehaviour
         }
 
         return false;
+    }
+
+
+
+
+    public void OnNewGame()
+    {
+        m_NewGameButton.gameObject.SetActive(false);
+        m_HighScoresButton.gameObject.SetActive(false);
+        m_HighScorePanel.gameObject.SetActive(false);
+        m_HighScoreBackButton.gameObject.SetActive(false);
+
+        m_gameTime = 0;
+        m_GameState = GameState.Playing;
+        m_TimerText.gameObject.SetActive(true);
+        m_MessageText.text = "";
+
+        for (int i = 0; i < m_Tanks.Length; i++)
+        {
+            m_Tanks[i].SetActive(true);
+        }
+    }
+
+    public void OnHighScores()
+    {
+        m_MessageText.text = "";
+        
+        m_HighScoreBackButton.gameObject.SetActive(true);
+        m_HighScorePanel.gameObject.SetActive(true);
+        m_HighScoresButton.gameObject.SetActive(false);
+        m_NewGameButton.gameObject.SetActive(false);
+
+        string text = "";
+        foreach(int _score in scores)
+        {
+            text += string.Format("{0:D2}:{1:D2}\n", (_score / 60), (_score % 60));
+        }
+        m_HighScoresText.text = text;
+    }
+
+    public void OnBackButton()
+    {
+        m_HighScoreBackButton.gameObject.SetActive(false);
+        m_HighScorePanel.gameObject.SetActive(false);
+        m_HighScoresButton.gameObject.SetActive(true);
+        m_NewGameButton.gameObject.SetActive(true);
     }
 }
